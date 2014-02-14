@@ -21,16 +21,16 @@ args = parser.parse_args()
 
 
 class ServerDefender(controller.Master):
-	"""
-		ServerDefender controller module
+    """
+        ServerDefender controller module
 
-		If learn_mode is on, the proxy will save all paths accessed to the database.
-		To run with learn_mode, run:
+        If learn_mode is on, the proxy will save all paths accessed to the database.
+        To run with learn_mode, run:
 
-		./defender.py --learn_mode=True
+        ./defender.py --learn_mode=True
 
-		If learn_mode is off, then it will disallow all HTTP requests that were not previously learned.
-	"""
+        If learn_mode is off, then it will disallow all HTTP requests that were not previously learned.
+    """
 
     def __init__(self, server):
         controller.Master.__init__(self, server)
@@ -42,13 +42,13 @@ class ServerDefender(controller.Master):
             self.shutdown()
 
     def handle_request(self, msg):
-    	# we only check for the path, since we assume that parameters change a lot.
-    	# in the future, better inspection modules can be implemented 
-    	# based on the request parameters.
+        # we only check for the path, since we assume that parameters change a lot.
+        # in the future, better inspection modules can be implemented 
+        # based on the request parameters.
         current_path = urlparse.urlparse(msg.get_url()).path
 
-    	# check if we are in protect mode. if we are, we will kill the request
-    	# if the current path was not saved in the DB.
+        # check if we are in protect mode. if we are, we will kill the request
+        # if the current path was not saved in the DB.
         if not args.learn_mode and current_path not in db:
             msg.reply(proxy.KILL)
             return
@@ -61,7 +61,7 @@ class ServerDefender(controller.Master):
         msg.reply()
 
     def handle_response(self, msg):
-    	# always return the server response as-is. 
+        # always return the server response as-is. 
         msg.reply()        
 
 if __name__ == '__main__':
